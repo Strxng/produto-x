@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import { View } from "react-native";
 import { Text } from "@/components";
+import { View } from "react-native";
+import { useEffect } from "react";
 import { useCameraPermissions } from "expo-camera";
+import { useQRCodeScan } from "@/hooks/useQRCodeScan";
 
 import qrCodeSquare from "@/assets/images/qrcode.png";
 
@@ -9,6 +10,12 @@ import * as S from "./styles";
 
 export const QRCodeScreen = () => {
   const [permission, requestPermission] = useCameraPermissions();
+
+  const { onScan } = useQRCodeScan({
+    onScanCorrect: () => {
+      console.log("escaneou certo");
+    },
+  });
 
   useEffect(() => {
     requestPermission();
@@ -35,7 +42,11 @@ export const QRCodeScreen = () => {
 
   return (
     <S.Container>
-      <S.Camera facing={"back"}>
+      <S.Camera
+        facing={"back"}
+        onBarcodeScanned={onScan}
+        barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
+      >
         <S.TextContainer>
           <Text family={"regular"} size={"large"} color={"secondary"}>
             Olá
