@@ -16,7 +16,7 @@ export const QRCodeScreen = () => {
     return <View />;
   }
 
-  if (true) {
+  if (!permission.granted) {
     return (
       <S.Container>
         <Text
