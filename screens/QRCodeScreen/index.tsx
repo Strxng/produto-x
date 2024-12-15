@@ -1,6 +1,7 @@
 import { Text } from "@/components";
 import { View } from "react-native";
 import { useEffect } from "react";
+import { router } from "expo-router";
 import { useCameraPermissions } from "expo-camera";
 import { useQRCodeScan } from "@/hooks/useQRCodeScan";
 
@@ -13,7 +14,8 @@ export const QRCodeScreen = () => {
 
   const { onScan } = useQRCodeScan({
     onScanCorrect: () => {
-      console.log("escaneou certo");
+      // ativar a RA
+      router.push("/home");
     },
   });
 
