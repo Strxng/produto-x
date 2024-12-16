@@ -15,7 +15,7 @@ export const QRCodeScreen = () => {
   const { onScan } = useQRCodeScan({
     onScanCorrect: () => {
       // ativar a RA
-      router.push("/home");
+      router.replace("/findProduct");
     },
   });
 

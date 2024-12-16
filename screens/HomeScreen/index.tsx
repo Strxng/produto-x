@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { Input } from "@/components";
 import { ITheme } from "@/configs/theme";
-import { ScrollView } from "react-native";
 import { produtos } from "@/mocks/produtos";
 import { useTheme } from "styled-components";
+import { Modal, ScrollView } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { ProdutoCard } from "@/components/ProdutoCard";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useProdutoContext } from "@/contexts/ProdutoContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as S from "./styles";
 
-export const HomeScreen = () => {
+interface IHomeScreenProps {
+  visible: boolean;
+  onRequestClose: () => void;
+}
+
+export const HomeScreen = ({ visible, onRequestClose }: IHomeScreenProps) => {
   const [searchText, setSearchText] = useState<string>("");
+
+  const { setSelectedProduto } = useProdutoContext();
+  const { top } = useSafeAreaInsets();
 
   const { data = [] } = useQuery({
     queryKey: ["produtos"],
@@ -21,9 +30,19 @@ export const HomeScreen = () => {
   const theme = useTheme() as ITheme;
 
   return (
-    <SafeAreaView>
+    <Modal
+      visible={visible}
+      presentationStyle="fullScreen"
+      onRequestClose={onRequestClose}
+      style={{ backgroundColor: theme.colors.background }}
+    >
       <ScrollView
-        style={{ height: "100%", width: "100%" }}
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundColor: theme.colors.background,
+          paddingTop: top,
+        }}
         contentContainerStyle={{
           padding: theme.spacing.paddings.large,
           gap: theme.spacing.gaps.large,
@@ -41,11 +60,11 @@ export const HomeScreen = () => {
             <ProdutoCard
               key={produto.id}
               produto={produto}
-              onPress={() => {}}
+              onPress={() => setSelectedProduto(produto)}
             />
           ))}
         </S.Grid>
       </ScrollView>
-    </SafeAreaView>
+    </Modal>
   );
 };

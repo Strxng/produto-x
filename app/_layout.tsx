@@ -1,5 +1,6 @@
 import { ThemeProvider, useTheme } from "styled-components";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ProdutoProvider } from "@/contexts/ProdutoContext";
 import { ITheme, theme } from "@/configs/theme";
 import { queryClient } from "@/configs/query";
 export { ErrorBoundary } from "expo-router";
@@ -41,7 +42,9 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <RootLayoutNav />
+        <ProdutoProvider>
+          <RootLayoutNav />
+        </ProdutoProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
@@ -57,7 +60,7 @@ function RootLayoutNav() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="home" options={{ headerShown: false }} />
+      <Stack.Screen name="findProduct" options={{ headerShown: false }} />
     </Stack>
   );
 }
