@@ -1,6 +1,8 @@
 import { ThemeProvider, useTheme } from "styled-components";
-export { ErrorBoundary } from "expo-router";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ITheme, theme } from "@/configs/theme";
+import { queryClient } from "@/configs/query";
+export { ErrorBoundary } from "expo-router";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
@@ -37,9 +39,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <RootLayoutNav />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <RootLayoutNav />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
