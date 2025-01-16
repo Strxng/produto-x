@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "produto-x",
-    "slug": "produto-x",
-    "version": "1.0.0",
+    "name": "CISSLive",
+    "slug": "cisslive-app",
+    "version": "2.5.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "cisslive-app",
+    "owner": "cisslive",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -15,18 +16,28 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fabricainovacao.produtox"
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to use your camera",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to use your microphone"
+      },
+      "bundleIdentifier": "br.com.ciss.cisslive",
+      "buildNumber": "1"
     },
     "android": {
+      "package": "br.com.ciss.cisslive",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.fabricainovacao.produtox"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +46,7 @@
     },
     "plugins": [
       "expo-router",
+      "@reactvision/react-viro",
       [
         "expo-camera",
         {
@@ -61,7 +73,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "9fd4e9ea-4900-4ca2-a2cc-28ff1773c4bf"
+        "projectId": "5f66e576-51c6-4e7c-9906-8d9b5be87371"
       }
     }
   }

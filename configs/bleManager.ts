@@ -33,12 +33,16 @@ class BLEServiceInstance {
         }
 
         if (scannedDevice && this.authorizedIds.includes(scannedDevice.id)) {
-          const rssi = addRssiValueAndGetAverage(
-            scannedDevice.id,
-            scannedDevice.rssi!
-          );
+          // const rssi = addRssiValueAndGetAverage(
+          //   scannedDevice.id,
+          //   scannedDevice.rssi!
+          // );
 
-          const distance = calculateDistanceRssi(rssi, MEASURE, MULTIPLIER);
+          const distance = calculateDistanceRssi(
+            scannedDevice.rssi!,
+            MEASURE,
+            MULTIPLIER
+          );
 
           const beacon = MappedBeacons.find((b) => b.id === scannedDevice.id)!;
 
