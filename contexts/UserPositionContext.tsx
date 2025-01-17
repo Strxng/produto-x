@@ -37,7 +37,7 @@ export function UserPositionProvider({
     return beaconTeste?.distance ?? 0;
   }, [beacons]);
 
-  console.log(distance);
+  // console.log(distance);
 
   const userPosition = useMemo((): IPosition | null => {
     if (!(beacons.length === 3)) return null;

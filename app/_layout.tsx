@@ -64,7 +64,6 @@ function RootLayoutNav() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="findProduct" options={{ headerShown: false }} />
     </Stack>
   );
 }
