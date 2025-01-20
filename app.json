@@ -8,7 +8,7 @@
     "scheme": "cisslive-app",
     "owner": "cisslive",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
