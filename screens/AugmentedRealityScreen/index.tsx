@@ -97,15 +97,17 @@ export const AugmentedRealityScreen = () => {
         style={{ flex: 1 }}
       />
 
-      <S.ButtonsContainer>
-        <Button
-          text={"Cancelar Busca"}
-          color={"cancel"}
-          onPress={() => {
-            setSelectedProduct(null);
-          }}
-        />
-      </S.ButtonsContainer>
+      {selectedProduct && (
+        <S.ButtonsContainer>
+          <Button
+            text={"Cancelar Busca"}
+            color={"cancel"}
+            onPress={() => {
+              setSelectedProduct(null);
+            }}
+          />
+        </S.ButtonsContainer>
+      )}
 
       <SearchProductScreen visible={searchProductModal.visible} />
     </FullContainer>

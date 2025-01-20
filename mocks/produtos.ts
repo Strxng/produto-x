@@ -5,7 +5,7 @@ export const produtos: IProduct[] = [
     id: "1",
     nome: "Arroz Branco",
     imagem:
-      "https://lh3.googleusercontent.com/proxy/6QK3mgwio4DP-1NWVu7iqbjlMlkoKj7IwhxY8VI6OZSSMDailY-ZVcnwCW8rShHjnvef1lKKrJgmmTaMvbKH10BoKWlm03EGui-Hk5Ee74NSCl566pgHZKwhcgKV87rBJvivO_mqJnOvWsaaIg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXWRfK1JRortkQ7jQUR-3n349HULnP_LQxw&s",
     preco: 5.99,
     unidadeMedida: "kg",
     prateleira: 1,
