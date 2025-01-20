@@ -6,3 +6,6 @@ export { Button } from "./Button";
 // Views
 export { FullContainer } from "./styles";
 export { PermissionsDeniedView } from "./PermissionsDeniedView";
+
+// Cards
+export { ProductCard } from "./ProductCard";

@@ -1,4 +1,4 @@
-export interface IProduto {
+export interface IProduct {
   id: string;
   nome: string;
   imagem: string;
@@ -7,4 +7,5 @@ export interface IProduto {
   prateleira: number;
   coordX: number;
   coordY: number;
+  coordZ: number;
 }

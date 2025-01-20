@@ -1,6 +1,6 @@
-import { IProduto } from "@/interfaces/Produto";
+import { IProduct } from "@/interfaces/Product";
 
-export const produtos: IProduto[] = [
+export const produtos: IProduct[] = [
   {
     id: "1",
     nome: "Arroz Branco",
@@ -9,8 +9,9 @@ export const produtos: IProduto[] = [
     preco: 5.99,
     unidadeMedida: "kg",
     prateleira: 1,
-    coordX: 10,
-    coordY: 5,
+    coordX: 2.65,
+    coordY: -0.05,
+    coordZ: -0.3,
   },
   {
     id: "2",
@@ -20,8 +21,9 @@ export const produtos: IProduto[] = [
     preco: 7.49,
     unidadeMedida: "kg",
     prateleira: 2,
-    coordX: 15,
-    coordY: 8,
+    coordX: 1,
+    coordY: 1.9,
+    coordZ: 0.3,
   },
   {
     id: "3",
@@ -33,6 +35,7 @@ export const produtos: IProduto[] = [
     prateleira: 1,
     coordX: 12,
     coordY: 4,
+    coordZ: 0,
   },
   {
     id: "4",
@@ -44,6 +47,7 @@ export const produtos: IProduto[] = [
     prateleira: 3,
     coordX: 20,
     coordY: 7,
+    coordZ: 0,
   },
   {
     id: "5",
@@ -55,5 +59,6 @@ export const produtos: IProduto[] = [
     prateleira: 2,
     coordX: 14,
     coordY: 6,
+    coordZ: 0,
   },
 ];

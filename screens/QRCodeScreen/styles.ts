@@ -4,10 +4,9 @@ import styled from "styled-components/native";
 import { Camera as ExpoCamera } from "expo-camera";
 
 export const Camera = styled(ExpoCamera)<{ theme: ITheme }>`
-  position: absolute;
+  gap: ${({ theme }) => theme.spacing.gaps.large}px;
   justify-content: center;
   align-items: center;
-  gap: 40px;
   height: 100%;
   width: 100%;
   z-index: 1;

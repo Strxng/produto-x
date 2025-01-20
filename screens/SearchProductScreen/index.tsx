@@ -1,24 +1,23 @@
 import { useState } from "react";
-import { Input } from "@/components";
+import { Input, ProductCard } from "@/components";
 import { ITheme } from "@/configs/theme";
 import { produtos } from "@/mocks/produtos";
 import { useTheme } from "styled-components";
 import { Modal, ScrollView } from "react-native";
 import { useQuery } from "@tanstack/react-query";
-import { ProdutoCard } from "@/components/ProdutoCard";
-import { useProdutoContext } from "@/contexts/ProdutoContext";
+import { useProductContext } from "@/contexts/ProductContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as S from "./styles";
 
-interface IHomeScreenProps {
+interface ISearchProductScreenProps {
   visible: boolean;
 }
 
-export const HomeScreen = ({ visible }: IHomeScreenProps) => {
+export const SearchProductScreen = ({ visible }: ISearchProductScreenProps) => {
   const [searchText, setSearchText] = useState<string>("");
 
-  const { setSelectedProduto } = useProdutoContext();
+  const { setSelectedProduct } = useProductContext();
   const { top } = useSafeAreaInsets();
 
   const { data = [] } = useQuery({
@@ -54,11 +53,11 @@ export const HomeScreen = ({ visible }: IHomeScreenProps) => {
         />
 
         <S.Grid>
-          {data.map((produto) => (
-            <ProdutoCard
-              key={produto.id}
-              produto={produto}
-              onPress={() => setSelectedProduto(produto)}
+          {data.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onPress={() => setSelectedProduct(product)}
             />
           ))}
         </S.Grid>

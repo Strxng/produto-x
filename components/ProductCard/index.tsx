@@ -1,17 +1,17 @@
-import { IProduto } from "@/interfaces/Produto";
+import { IProduct } from "@/interfaces/Product";
 
 import * as S from "./styles";
 import { Text } from "../Text";
 
-interface IProdutoCardProps {
-  produto: IProduto;
+interface IProductCardProps {
+  product: IProduct;
   onPress: () => void;
 }
 
-export const ProdutoCard = ({ produto, onPress }: IProdutoCardProps) => {
+export const ProductCard = ({ product, onPress }: IProductCardProps) => {
   return (
     <S.Container onPress={onPress}>
-      <S.ProdutoImage source={{ uri: produto.imagem }} />
+      <S.ProdutoImage source={{ uri: product.imagem }} />
 
       <S.DataContainer>
         <Text
@@ -20,11 +20,11 @@ export const ProdutoCard = ({ produto, onPress }: IProdutoCardProps) => {
           color={"primary"}
           numberOfLines={1}
         >
-          {produto.nome}
+          {product.nome}
         </Text>
 
         <Text family={"regular"} size={"small"} color={"tertiary"}>
-          {`€ ${produto.preco}`}
+          {`€ ${product.preco}`}
         </Text>
       </S.DataContainer>
     </S.Container>

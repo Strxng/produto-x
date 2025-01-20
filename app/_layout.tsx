@@ -1,7 +1,7 @@
 import { UserPositionProvider } from "@/contexts/UserPositionContext";
 import { ThemeProvider, useTheme } from "styled-components";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ProdutoProvider } from "@/contexts/ProdutoContext";
+import { ProductProvider } from "@/contexts/ProductContext";
 import { ITheme, theme } from "@/configs/theme";
 import { queryClient } from "@/configs/query";
 export { ErrorBoundary } from "expo-router";
@@ -48,10 +48,10 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <UserPositionProvider>
-            <ProdutoProvider>
+            <ProductProvider>
               <FullLoading />
               <RootLayoutNav />
-            </ProdutoProvider>
+            </ProductProvider>
           </UserPositionProvider>
         </ThemeProvider>
       </QueryClientProvider>
