@@ -4,30 +4,29 @@ import {
   ViroTrackingReason,
   ViroTrackingStateConstants,
 } from "@reactvision/react-viro";
+import { useState } from "react";
 
 export const ARProductScene = () => {
-  console.log("veio");
+  const [ready, setReady] = useState<boolean>(false);
 
   const onInitialized = (state: any, reason: ViroTrackingReason) => {
     console.log("guncelleme", state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      console.log("deu boa");
+      setReady(true);
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      // Handle loss of tracking
       console.log("erro?");
     }
   };
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroText
-        text={"testando"}
-        scale={[0.5, 0.5, 0.5]}
-        height={20}
-        width={20}
-        position={[0, 0, -2]}
-        style={{ color: "red" }}
-      />
+      {ready && (
+        <ViroText
+          text={"testando"}
+          scale={[0.5, 0.5, 0.5]}
+          style={{ color: "red" }}
+        />
+      )}
     </ViroARScene>
   );
 };

@@ -8,8 +8,12 @@ import { ARProductScene } from "../ARProductScene";
 
 export const ARQrCodeScene = (props: any): React.JSX.Element => {
   const handleMarker = () => {
-    console.log("leu o qrcode");
-    props.arSceneNavigator.push({ scene: ARProductScene });
+    try {
+      console.log("leu o qrcode");
+      props.arSceneNavigator.push({ scene: ARProductScene });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
