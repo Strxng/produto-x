@@ -1,5 +1,5 @@
 import { CONSTANTS } from "@/configs/contants";
-import { BarcodeScanningResult } from "expo-camera";
+import { BarCodeScanningResult } from "expo-camera";
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -11,7 +11,7 @@ export const useQRCodeScan = ({ onScanCorrect }: IUseQRCodeScanParams) => {
   const [scannedCode, setScannedCode] = useState<string>("");
 
   const onScan = useCallback(
-    (scanningResult: BarcodeScanningResult) => {
+    (scanningResult: BarCodeScanningResult) => {
       if (!scannedCode && scanningResult.data !== scannedCode) {
         setScannedCode(scanningResult.data);
       }

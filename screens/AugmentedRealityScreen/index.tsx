@@ -1,20 +1,21 @@
+import { useState } from "react";
+import { useFullLoadingContext } from "@/contexts/FullLoadingContext";
+
 import {
   ViroText,
   ViroARScene,
-  ViroTrackingReason,
+  ViroARSceneNavigator,
   ViroTrackingStateConstants,
 } from "@reactvision/react-viro";
-import { useState } from "react";
 
-export const ARProductScene = () => {
+const ARProductScene = () => {
   const [ready, setReady] = useState<boolean>(false);
+  const { stopLoading } = useFullLoadingContext();
 
-  const onInitialized = (state: any, reason: ViroTrackingReason) => {
-    console.log("guncelleme", state, reason);
+  const onInitialized = (state: number) => {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
       setReady(true);
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      console.log("erro?");
+      stopLoading();
     }
   };
 
@@ -22,11 +23,16 @@ export const ARProductScene = () => {
     <ViroARScene onTrackingUpdated={onInitialized}>
       {ready && (
         <ViroText
-          text={"testando"}
+          text={"ALOOOOOUUU"}
           scale={[0.5, 0.5, 0.5]}
+          position={[0, 0, 0]}
           style={{ color: "red" }}
         />
       )}
     </ViroARScene>
   );
+};
+
+export const AugmentedRealityScreen = () => {
+  return <ViroARSceneNavigator initialScene={{ scene: ARProductScene }} />;
 };

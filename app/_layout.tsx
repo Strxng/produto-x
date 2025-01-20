@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 
 import "react-native-reanimated";
+import { FullLoadingProvider } from "@/contexts/FullLoadingContext";
+import { FullLoading } from "@/components/FullLoading";
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -42,15 +44,18 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <UserPositionProvider>
-          <ProdutoProvider>
-            <RootLayoutNav />
-          </ProdutoProvider>
-        </UserPositionProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <FullLoadingProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <UserPositionProvider>
+            <ProdutoProvider>
+              <FullLoading />
+              <RootLayoutNav />
+            </ProdutoProvider>
+          </UserPositionProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </FullLoadingProvider>
   );
 }
 
@@ -64,6 +69,7 @@ function RootLayoutNav() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="augmentedReality" options={{ headerShown: false }} />
     </Stack>
   );
 }
