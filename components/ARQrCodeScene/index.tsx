@@ -6,15 +6,17 @@ import {
 
 import { ARProductScene } from "../ARProductScene";
 
-export const ARQrCodeScene = (props: any) => {
+export const ARQrCodeScene = (props: any): React.JSX.Element => {
+  const handleMarker = () => {
+    console.log("leu o qrcode");
+    props.arSceneNavigator.push({ scene: ARProductScene });
+  };
+
   return (
     <ViroARScene>
       <ViroARImageMarker
         target={"qrcode"}
-        onAnchorFound={() => {
-          console.log("QRCode Lido");
-          props.sceneNavigator.push({ scene: ARProductScene });
-        }}
+        onAnchorFound={() => handleMarker()}
       />
     </ViroARScene>
   );

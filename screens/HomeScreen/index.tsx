@@ -23,11 +23,11 @@ export const HomeScreen = () => {
 
   return (
     <ViroARSceneNavigator
-      autofocus={true}
+      // autofocus={true}
       initialScene={{
-        scene: ARQrCodeScene,
+        scene: ARQrCodeScene as any,
       }}
-      style={{ flex: 1, width: "100%", backgroundColor: "blue" }}
+      // style={{ flex: 1, width: "100%", backgroundColor: "blue" }}
     />
   );
 };

@@ -1,51 +1,31 @@
 import {
-  ViroAmbientLight,
-  ViroARScene,
-  ViroBox,
-  ViroMaterials,
   ViroText,
+  ViroARScene,
   ViroTrackingReason,
   ViroTrackingStateConstants,
 } from "@reactvision/react-viro";
 
-import { useState } from "react";
-
-interface IARProductSceneProps {}
-
-ViroMaterials.createMaterials({
-  box: {
-    diffuseColor: "red",
-  },
-});
-
 export const ARProductScene = () => {
-  const [text, setText] = useState("Initializing AR...");
+  console.log("veio");
 
-  function onInitialized(state: any, reason: ViroTrackingReason) {
+  const onInitialized = (state: any, reason: ViroTrackingReason) => {
     console.log("guncelleme", state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText("Hello World!");
+      console.log("deu boa");
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
       // Handle loss of tracking
+      console.log("erro?");
     }
-  }
+  };
 
   return (
-    <ViroARScene onTrackingUpdated={onInitialized} style={{ width: "100%" }}>
-      <ViroAmbientLight color="#FFFFFF" intensity={250} />
-
-      <ViroBox
-        position={[0, 0.05, -0.3]}
-        height={0.2}
-        width={0.2}
-        length={0.2}
-        scale={[0.5, 0.5, 0.5]}
-        materials={["box"]}
-      />
+    <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroText
-        text={text}
+        text={"testando"}
         scale={[0.5, 0.5, 0.5]}
-        position={[0, 0, -1]}
+        height={20}
+        width={20}
+        position={[0, 0, -2]}
         style={{ color: "red" }}
       />
     </ViroARScene>
