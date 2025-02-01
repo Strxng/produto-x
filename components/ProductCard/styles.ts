@@ -16,5 +16,5 @@ export const ProdutoImage = styled(Image)`
 `;
 
 export const DataContainer = styled.View`
-  margin-top: 10pxr;
+  margin-top: 10px;
 `;

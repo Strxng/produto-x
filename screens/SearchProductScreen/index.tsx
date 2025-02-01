@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Input, ProductCard } from "@/components";
 import { ITheme } from "@/configs/theme";
-import { produtos } from "@/mocks/produtos";
 import { useTheme } from "styled-components";
-import { Modal, ScrollView } from "react-native";
 import { useQuery } from "@tanstack/react-query";
+import { Modal, ScrollView } from "react-native";
+import { Input, ProductCard } from "@/components";
+import { getProdutos } from "@/services/getProdutos";
 import { useProductContext } from "@/contexts/ProductContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as S from "./styles";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface ISearchProductScreenProps {
   visible: boolean;
@@ -20,9 +21,14 @@ export const SearchProductScreen = ({ visible }: ISearchProductScreenProps) => {
   const { setSelectedProduct } = useProductContext();
   const { top } = useSafeAreaInsets();
 
+  const search = useDebounce({
+    value: searchText,
+    debounceTime: 500,
+  });
+
   const { data = [] } = useQuery({
-    queryKey: ["produtos"],
-    queryFn: () => produtos,
+    queryKey: ["produtos", search],
+    queryFn: () => getProdutos({ search }),
   });
 
   const theme = useTheme() as ITheme;
