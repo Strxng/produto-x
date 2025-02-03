@@ -1,14 +1,14 @@
-import { Dimensions, Platform } from "react-native";
+import { Alert, Dimensions, Platform } from "react-native";
 import { Image as RNImage } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import React, { useCallback, useRef } from "react";
-import { Button, FullContainer } from "@/components";
+import { Button, FullContainer, IconButton } from "@/components";
 import { useModalState } from "@/hooks/useModalState";
 import { predictImage } from "@/services/predictImage";
 import { SearchProductScreen } from "../SearchProductScreen";
 import { useProductContext } from "@/contexts/ProductContext";
 import { useFullLoadingContext } from "@/contexts/FullLoadingContext";
-import { Canvas, Image, Line, Skia } from "@shopify/react-native-skia";
+import { Canvas, Image, Line, Rect, Skia } from "@shopify/react-native-skia";
 
 import {
   ViroText,
@@ -121,13 +121,53 @@ export const AugmentedRealityScreen = () => {
       setCanvasImage(cvImage);
       setLines(res.lines);
     } catch (error) {
-      console.log(error);
       setScreenshot("");
       setLines([]);
     } finally {
       stopLoading();
     }
   }, [startLoading, stopLoading]);
+
+  const squareSizes = useMemo(() => {
+    if (!selectedProduct || !lines.length) return null;
+
+    const reversedLines = lines.reverse();
+
+    const arr = reversedLines.slice(
+      selectedProduct.prateleira - 1,
+      selectedProduct.prateleira + 1
+    );
+
+    // caso identifique menos linhas que o número da prateleira
+    if (!arr.length) {
+      Alert.alert(
+        "Erro",
+        "Não foi possível identificar a prateleira do produto"
+      );
+      return null;
+    }
+
+    // caso seja o ultimo andar
+    if (arr.length < 2) {
+      const [line1] = arr;
+
+      const x = line1[0];
+      const y = line1[1];
+      const width = line1[2] - line1[0];
+      const height = Math.abs(screen.height - line1[1]);
+
+      return { x, y, width, height };
+    }
+
+    const [line1, line2] = arr;
+
+    const x = line1[0];
+    const y = Math.min(line1[1], line2[1]);
+    const width = line1[2] - line1[0];
+    const height = Math.abs(line2[1] - line1[1]);
+
+    return { x, y, width, height };
+  }, [lines, selectedProduct]);
 
   useEffect(() => {
     if (!selectedProduct && !isLoading) {
@@ -174,34 +214,20 @@ export const AugmentedRealityScreen = () => {
               fit={"contain"}
             />
 
-            {lines.map((line, index) => {
-              const y1 = line[0] / screen.scale;
-              const x1 = line[1] / screen.scale;
-
-              const y2 = line[2] / screen.scale;
-              const x2 = line[3] / screen.scale;
-
-              return (
-                <Line
-                  key={index}
-                  p1={{
-                    x: x1,
-                    y: y1,
-                  }}
-                  p2={{
-                    x: x2,
-                    y: y2,
-                  }}
-                  color="red"
-                  strokeWidth={3}
-                />
-              );
-            })}
+            {Boolean(squareSizes) && (
+              <Rect
+                x={squareSizes!.x / screen.scale}
+                y={squareSizes!.y / screen.scale}
+                width={squareSizes!.width / screen.scale}
+                height={squareSizes!.height / screen.scale}
+                color="rgba(0, 255, 0, 0.4)"
+              />
+            )}
           </Canvas>
 
           <S.ButtonsContainer>
             <Button
-              text={"OK"}
+              text={"Encontrei"}
               color={"confirm"}
               onPress={() => {
                 setScreenshot("");
@@ -214,8 +240,8 @@ export const AugmentedRealityScreen = () => {
 
       {Boolean(selectedProduct) && Boolean(!screenshot) && (
         <S.ButtonsContainer>
-          <Button
-            text={"Cancelar Busca"}
+          <IconButton
+            icon="chevron-left"
             color={"cancel"}
             onPress={() => {
               setSelectedProduct(null);

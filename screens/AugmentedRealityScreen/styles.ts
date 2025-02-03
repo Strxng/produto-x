@@ -5,7 +5,9 @@ import { Image } from "expo-image";
 export const ButtonsContainer = styled.View<{ theme: ITheme }>`
   margin-bottom: ${({ theme }) => theme.spacing.margins.large}px;
   gap: ${({ theme }) => theme.spacing.gaps.large}px;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   position: absolute;
   width: 100%;
   bottom: 0px;
