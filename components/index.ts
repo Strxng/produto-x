@@ -10,3 +10,4 @@ export { PermissionsDeniedView } from "./PermissionsDeniedView";
 
 // Cards
 export { ProductCard } from "./ProductCard";
+export { ProductArCard } from "./ProductArCard";

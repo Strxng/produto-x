@@ -2,21 +2,19 @@ import { Alert, Dimensions, Platform } from "react-native";
 import { Image as RNImage } from "react-native";
 import { useEffect, useMemo, useState } from "react";
 import React, { useCallback, useRef } from "react";
-import { Button, FullContainer, IconButton } from "@/components";
+import { Button, FullContainer, IconButton, ProductArCard } from "@/components";
 import { useModalState } from "@/hooks/useModalState";
 import { predictImage } from "@/services/predictImage";
 import { SearchProductScreen } from "../SearchProductScreen";
 import { useProductContext } from "@/contexts/ProductContext";
 import { useFullLoadingContext } from "@/contexts/FullLoadingContext";
-import { Canvas, Image, Line, Rect, Skia } from "@shopify/react-native-skia";
+import { Canvas, Image, Rect, Skia } from "@shopify/react-native-skia";
 
 import {
-  ViroText,
   ViroARScene,
   ViroARSceneNavigator,
   ViroTrackingStateConstants,
   ViroAmbientLight,
-  ViroBox,
   ViroMaterials,
 } from "@reactvision/react-viro";
 
@@ -49,32 +47,7 @@ const ARProductScene = ({ onReady }: ARProductSceneProps) => {
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroAmbientLight color="#FFFFFF" intensity={250} />
 
-      {ready && selectedProduct && (
-        <>
-          <ViroText
-            text={selectedProduct.nome}
-            scale={[0.5, 0.5, 0.5]}
-            position={[
-              selectedProduct.coordX,
-              selectedProduct.coordZ + 0.1,
-              selectedProduct.coordY,
-            ]}
-            style={{ color: "red", textAlign: "center" }}
-          />
-          <ViroBox
-            position={[
-              selectedProduct.coordX,
-              selectedProduct.coordZ,
-              selectedProduct.coordY,
-            ]}
-            height={0.2}
-            width={0.2}
-            length={0.2}
-            scale={[0.5, 0.5, 0.5]}
-            materials={["box"]}
-          />
-        </>
-      )}
+      {ready && selectedProduct && <ProductArCard product={selectedProduct!} />}
     </ViroARScene>
   );
 };
