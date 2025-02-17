@@ -11,6 +11,7 @@ export const ProductArCard = ({ product }: IProductArCardProps) => {
       position={[product.coordX, product.coordZ, product.coordY]}
       height={0.35}
       width={0.25}
+      transformBehaviors={"billboard"}
       style={{
         backgroundColor: "white",
         borderRadius: 0.2,
