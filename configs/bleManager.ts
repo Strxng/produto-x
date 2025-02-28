@@ -1,17 +1,15 @@
 import { IBeacon } from "@/interfaces/Beacon";
 import { BleManager, ScanMode } from "react-native-ble-plx";
 import { calculateDistanceRssi } from "@/utils/calculateDistanceRssi";
-import { addRssiValueAndGetAverage } from "@/utils/addRssiValueAndGetAverage";
 import { MappedBeacons } from "./beacons";
+import { addRssiValue, getRssiAverage } from "@/utils/rssi";
 
 // IDS dos beacons
 const BEACONS_IDS = MappedBeacons.map((b) => b.id);
-
 // Representa o RSSI em uma distância de 1 metro.
-const MEASURE = -69;
-
+const MEASURE = -64;
 // Representa o fator de atenuação do sinal, refletindo a perda do sinal no ambiente.
-const MULTIPLIER = 3;
+const MULTIPLIER = 2.5;
 
 class BLEServiceInstance {
   private authorizedIds: string[];
@@ -33,20 +31,18 @@ class BLEServiceInstance {
         }
 
         if (scannedDevice && this.authorizedIds.includes(scannedDevice.id)) {
-          // const rssi = addRssiValueAndGetAverage(
-          //   scannedDevice.id,
-          //   scannedDevice.rssi!
-          // );
+          addRssiValue(scannedDevice.id, scannedDevice.rssi!);
+          const rssiAverage = getRssiAverage(scannedDevice.id);
 
           const distance = calculateDistanceRssi(
-            scannedDevice.rssi!,
+            rssiAverage,
             MEASURE,
             MULTIPLIER
           );
 
           const beacon = MappedBeacons.find((b) => b.id === scannedDevice.id)!;
-
           beacon.distance = distance;
+          beacon.rssi = rssiAverage;
 
           callback(beacon);
         }

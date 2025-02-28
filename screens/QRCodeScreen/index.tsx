@@ -17,7 +17,9 @@ export const HomeScreen = () => {
 
   const { onScan } = useQRCodeScan({
     onScanCorrect: () => {
-      startLoading("Inicializando realidade aumentada");
+      startLoading(
+        "Inicializando realidade aumentada\nEvite mover o dispositivo"
+      );
       router.replace("/augmentedReality");
     },
   });

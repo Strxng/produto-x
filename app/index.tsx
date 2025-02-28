@@ -1,5 +1,6 @@
 import { HomeScreen } from "@/screens/QRCodeScreen";
+import { TesteScreen } from "@/screens/TesteBeacons";
 
 export default function QRCode() {
-  return <HomeScreen />;
+  return <TesteScreen />;
 }

@@ -15,7 +15,12 @@ export const FullLoading = () => {
     >
       <S.OverlayContainer>
         <ActivityIndicator color={"white"} size={30} />
-        <Text family={"regular"} size={"medium"} color={"secondary"}>
+        <Text
+          family={"regular"}
+          size={"medium"}
+          color={"secondary"}
+          style={{ textAlign: "center" }}
+        >
           {message}
         </Text>
       </S.OverlayContainer>

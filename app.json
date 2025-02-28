@@ -61,7 +61,7 @@
             "peripheral",
             "central"
           ],
-          "bluetoothAlwaysPermission": "Allow Produto X to connect to bluetooth devices"
+          "bluetoothAlwaysPermission": "Permitir Produto X conectar com dispositivos Bluetooth"
         }
       ]
     ],
