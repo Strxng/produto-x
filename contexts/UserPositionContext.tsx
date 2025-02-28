@@ -1,5 +1,7 @@
 import {
   createContext,
+  Dispatch,
+  SetStateAction,
   useCallback,
   useContext,
   useMemo,
@@ -9,7 +11,6 @@ import {
 import { BLEService } from "@/configs/bleManager";
 import { IBeacon } from "@/interfaces/Beacon";
 import { IPosition } from "@/interfaces/Position";
-import { trilateration } from "@/utils/trilaterate";
 
 interface IUserPositionProviderProps {
   children?: JSX.Element | JSX.Element[];
@@ -17,7 +18,8 @@ interface IUserPositionProviderProps {
 
 interface IUserPositionContextData {
   beacons: IBeacon[];
-  userPosition: IPosition | null;
+  userPosition: IPosition;
+  setUserPosition: Dispatch<SetStateAction<IPosition>>;
   startMonitoring: () => void;
   stopMonitoring: () => void;
 }
@@ -30,11 +32,11 @@ export function UserPositionProvider({
   children,
 }: IUserPositionProviderProps): JSX.Element {
   const [beacons, setBeacons] = useState<IBeacon[]>([]);
-
-  const userPosition = useMemo((): IPosition | null => {
-    if (!(beacons.length === 3)) return null;
-    return trilateration(beacons);
-  }, [beacons, trilateration]);
+  const [userPosition, setUserPosition] = useState<IPosition>({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
 
   const startMonitoring = useCallback(() => {
     BLEService.startScan((beacon) => {
@@ -58,10 +60,11 @@ export function UserPositionProvider({
     () => ({
       beacons,
       userPosition,
+      setUserPosition,
       startMonitoring,
       stopMonitoring,
     }),
-    [beacons, userPosition, startMonitoring, stopMonitoring]
+    [beacons, userPosition, setUserPosition, startMonitoring, stopMonitoring]
   );
 
   return (

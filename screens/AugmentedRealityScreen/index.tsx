@@ -1,30 +1,34 @@
-import { Alert, Dimensions, Platform } from "react-native";
 import { Image as RNImage } from "react-native";
-import { useEffect, useMemo, useState } from "react";
 import React, { useCallback, useRef } from "react";
-import { Button, FullContainer, IconButton, ProductArCard } from "@/components";
+import { useEffect, useMemo, useState } from "react";
 import { useModalState } from "@/hooks/useModalState";
 import { predictImage } from "@/services/predictImage";
+import { Alert, Dimensions, Platform } from "react-native";
 import { SearchProductScreen } from "../SearchProductScreen";
 import { useProductContext } from "@/contexts/ProductContext";
 import { useFullLoadingContext } from "@/contexts/FullLoadingContext";
 import { Canvas, Image, Rect, Skia } from "@shopify/react-native-skia";
+import { useUserPositionContext } from "@/contexts/UserPositionContext";
+import {
+  Button,
+  FullContainer,
+  IconButton,
+  ProductArCard,
+  Text,
+} from "@/components";
 
 import {
   ViroARScene,
   ViroARSceneNavigator,
   ViroTrackingStateConstants,
   ViroAmbientLight,
-  ViroMaterials,
 } from "@reactvision/react-viro";
 
 import * as S from "./styles";
-
-ViroMaterials.createMaterials({
-  box: {
-    diffuseColor: "red",
-  },
-});
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { calculateDistance3D } from "@/utils/calculateDistance3D";
+import { StepOneView } from "./StepOneView";
+import { StepTwoView } from "./StepTwoView";
 
 interface ARProductSceneProps {
   onReady: () => void;
@@ -32,9 +36,12 @@ interface ARProductSceneProps {
 
 const screen = Dimensions.get("screen");
 
-const ARProductScene = ({ onReady }: ARProductSceneProps) => {
+const ARProductScene = React.memo(({ onReady }: ARProductSceneProps) => {
   const [ready, setReady] = useState<boolean>(false);
   const { selectedProduct } = useProductContext();
+  const { setUserPosition } = useUserPositionContext();
+
+  const sceneRef = useRef<ViroARScene | null>(null);
 
   const onInitialized = (state: number) => {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
@@ -44,13 +51,23 @@ const ARProductScene = ({ onReady }: ARProductSceneProps) => {
   };
 
   return (
-    <ViroARScene onTrackingUpdated={onInitialized}>
+    <ViroARScene
+      ref={sceneRef}
+      onTrackingUpdated={onInitialized}
+      onCameraTransformUpdate={(camera) => {
+        setUserPosition({
+          x: camera.position[0],
+          y: camera.position[1],
+          z: camera.position[2],
+        });
+      }}
+    >
       <ViroAmbientLight color="#FFFFFF" intensity={250} />
 
       {ready && selectedProduct && <ProductArCard product={selectedProduct!} />}
     </ViroARScene>
   );
-};
+});
 
 export const AugmentedRealityScreen = () => {
   const [screenshot, setScreenshot] = useState<string>("");
@@ -59,13 +76,26 @@ export const AugmentedRealityScreen = () => {
   const [width, setWidth] = useState<number>(0);
   const [lines, setLines] = useState<any[]>([]);
 
+  const { top } = useSafeAreaInsets();
   const { stopLoading, isLoading, startLoading } = useFullLoadingContext();
   const { selectedProduct, setSelectedProduct } = useProductContext();
   const searchProductModal = useModalState();
 
+  const { userPosition } = useUserPositionContext();
+
   const ref = useRef<ViroARSceneNavigator>(null);
 
-  const onReadyCallback = () => stopLoading();
+  const distance = useMemo(() => {
+    return calculateDistance3D(userPosition, {
+      x: selectedProduct?.coordX ?? 0,
+      y: selectedProduct?.coordY ?? 0,
+      z: selectedProduct?.coordZ ?? 0,
+    });
+  }, [userPosition]);
+
+  const onReady = useCallback(() => {
+    stopLoading();
+  }, [stopLoading]);
 
   const handlePredictImage = useCallback(async () => {
     try {
@@ -155,7 +185,7 @@ export const AugmentedRealityScreen = () => {
       <ViroARSceneNavigator
         ref={ref}
         initialScene={{
-          scene: () => ARProductScene({ onReady: onReadyCallback }),
+          scene: () => <ARProductScene onReady={onReady} />,
         }}
         style={{ flex: 1 }}
       />
@@ -211,22 +241,10 @@ export const AugmentedRealityScreen = () => {
         </>
       )}
 
-      {Boolean(selectedProduct) && Boolean(!screenshot) && (
-        <S.ButtonsContainer>
-          <IconButton
-            icon="chevron-left"
-            color={"cancel"}
-            onPress={() => {
-              setSelectedProduct(null);
-            }}
-          />
+      {Boolean(selectedProduct && distance > 3) && <StepOneView />}
 
-          <Button
-            text={"Pronto"}
-            color={"confirm"}
-            onPress={handlePredictImage}
-          />
-        </S.ButtonsContainer>
+      {Boolean(selectedProduct && distance <= 3) && (
+        <StepTwoView onReady={handlePredictImage} />
       )}
 
       <SearchProductScreen visible={searchProductModal.visible} />

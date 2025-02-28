@@ -1,16 +1,33 @@
+import { useUserPositionContext } from "@/contexts/UserPositionContext";
 import { IProduct } from "@/interfaces/Product";
+import { calculateDistance3D } from "@/utils/calculateDistance3D";
+import { calculateScale } from "@/utils/calculateScale";
 import { ViroFlexView, ViroImage, ViroText } from "@reactvision/react-viro";
+import { useMemo } from "react";
 
 interface IProductArCardProps {
   product: IProduct;
 }
 
 export const ProductArCard = ({ product }: IProductArCardProps) => {
+  const { userPosition } = useUserPositionContext();
+
+  const scale = useMemo(() => {
+    const distance = calculateDistance3D(userPosition, {
+      x: product.coordX,
+      y: product.coordY,
+      z: product.coordZ,
+    });
+
+    return calculateScale(distance);
+  }, [userPosition]);
+
   return (
     <ViroFlexView
-      position={[product.coordX, product.coordZ, product.coordY]}
+      position={[product.coordX, product.coordY, product.coordZ]}
       height={0.35}
       width={0.25}
+      scale={[scale, scale, scale]}
       transformBehaviors={"billboard"}
       style={{
         backgroundColor: "white",
