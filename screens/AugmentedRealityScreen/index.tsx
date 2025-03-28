@@ -40,8 +40,17 @@ const ARProductScene = React.memo(({ onReady }: ARProductSceneProps) => {
   const [ready, setReady] = useState<boolean>(false);
   const { selectedProduct } = useProductContext();
   const { setUserPosition } = useUserPositionContext();
+  const { userPosition } = useUserPositionContext();
 
   const sceneRef = useRef<ViroARScene | null>(null);
+
+  const distance = useMemo(() => {
+    return calculateDistance3D(userPosition, {
+      x: selectedProduct?.coordX ?? 0,
+      y: selectedProduct?.coordY ?? 0,
+      z: selectedProduct?.coordZ ?? 0,
+    });
+  }, [userPosition]);
 
   const onInitialized = (state: number) => {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
